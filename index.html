@@ -7,6 +7,7 @@
     <title>Ph-Tube</title>
     <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="css/active.css">
 </head>
 
 <body>
@@ -18,15 +19,17 @@
         </ul>
     </nav>
     <nav id="categories" class="flex gap-3 items-center justify-center py-5 w-11/12 mx-auto">
-
+        <button onclick="displayAll()" id="all-btn" class="btn active-remover">All</button>
     </nav>
-    <script src="js/video.js"></script>
+    
 
     <main>
         <section id="video" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 py-4 w-11/12 mx-auto ">
-
+            
         </section>
     </main>
+    <!-- js link -->
+    <script src="js/video.js"></script>
 </body>
 
 </html>

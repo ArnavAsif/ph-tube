@@ -13,23 +13,47 @@ function getTime(time) {
 function displayAll() {
     fetch(`https://openapi.programming-hero.com/api/phero-tube/videos`)
         .then(res => res.json())
-        .then(data => displayVideo(data.videos))
+        .then(data => {
+            // ******* button active removing *****//
+            activeRemover();
+            
+            // ******* button active added *****//   
+            const activeBtn = document.getElementById('all-btn');
+            activeBtn.classList.add('active')
+            displayVideo(data.videos)})
         .catch((error) => console.log(error))
 }
 
 // onClick function selected
+const activeRemover = ()=>{
+    const buttons =  document.getElementsByClassName('active-remover')
+    console.log(buttons)
+    for(const btn of buttons ){
+        btn.classList.remove('active')
+    }
+}
+
 function displaySelectedProperties(id) {
     // alert(id)
 
     fetch(`https://openapi.programming-hero.com/api/phero-tube/category/${id}`)
         .then(res => res.json())
-        .then(data => displayVideo(data.category))
+        .then(data => {
+
+            // ******* button active removing *****//
+            activeRemover();
+            
+            // ******* button active added *****//   
+            const activeBtn = document.getElementById(`btn-${id}`);
+            activeBtn.classList.add('active')
+
+            displayVideo(data.category)
+        })
         .catch((error) => console.log(error))
 }
 
 
-
-// categories loader
+/***********************         categories button loader start         ****************/ 
 
 const loadCategories = () => {
     fetch('https://openapi.programming-hero.com/api/phero-tube/categories')
@@ -37,6 +61,8 @@ const loadCategories = () => {
         .then(data => displayCategories(data.categories))
         .catch((error) => console.log(error))
 };
+
+
 const displayCategories = (categories) => {
 
     const buttonContainer = document.getElementById('categories')
@@ -45,7 +71,7 @@ const displayCategories = (categories) => {
         // making button api
         const button = document.createElement('div');
         button.innerHTML = `
-        <button onclick="displaySelectedProperties(${item.category_id})" class="btn">
+        <button id="btn-${item.category_id}" onclick="displaySelectedProperties(${item.category_id})" class="btn active-remover">
         ${item.category}
         </button>
         `
@@ -54,9 +80,11 @@ const displayCategories = (categories) => {
         buttonContainer.append(button)
     })
 }
+/***********************         categories button loader end         ****************/ 
 
-// video loader
 
+
+/***********************         video loader start         ****************/ 
 const videoLoader = () => {
     fetch('https://openapi.programming-hero.com/api/phero-tube/videos')
         .then(res => res.json())
@@ -67,6 +95,21 @@ const videoLoader = () => {
 const displayVideo = (videos) => {
     const newVideoSection = document.getElementById('video');
     newVideoSection.innerHTML = "";
+    if(videos.length === 0){
+        newVideoSection.classList.remove('grid')
+        newVideoSection.innerHTML =`
+        <div class="gap-5 flex flex-col justify-center items-center mt-10">
+            <img class="w-52 h-52" src="logos/Icon.png">
+            <p> NO Videos Right now
+            </p>
+        </div>
+        </di/v>
+        
+        `
+    }
+    else {
+        newVideoSection.classList.add('grid')
+    }
     videos.forEach(video => {
         const div = document.createElement('div');
         div.innerHTML =
@@ -99,7 +142,7 @@ const displayVideo = (videos) => {
         newVideoSection.append(div)
     })
 };
-
+/***********************         video loader end         ****************/ 
 
 loadCategories();
 videoLoader();
