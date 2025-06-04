@@ -9,7 +9,7 @@ function getTime(time) {
     return ` ${hour} hour ${minute} minutes ${remainingSecond} second ago`;
 }
 
-// onclick all
+// onclick all button
 function displayAll() {
     fetch(`https://openapi.programming-hero.com/api/phero-tube/videos`)
         .then(res => res.json())
