@@ -2,14 +2,34 @@
 
 
 function getTime(time) {
-    const hour =parseInt(time / 3600);
+    const hour = parseInt(time / 3600);
     let remainingSecond = time % 3600;
     const minute = parseInt(remainingSecond / 60);
     remainingSecond = remainingSecond % 60;
     return ` ${hour} hour ${minute} minutes ${remainingSecond} second ago`;
 }
 
+// onclick all
+function displayAll() {
+    fetch(`https://openapi.programming-hero.com/api/phero-tube/videos`)
+        .then(res => res.json())
+        .then(data => displayVideo(data.videos))
+        .catch((error) => console.log(error))
+}
 
+// onClick function selected
+function displaySelectedProperties(id) {
+    // alert(id)
+
+    fetch(`https://openapi.programming-hero.com/api/phero-tube/category/${id}`)
+        .then(res => res.json())
+        .then(data => displayVideo(data.category))
+        .catch((error) => console.log(error))
+}
+
+
+
+// categories loader
 
 const loadCategories = () => {
     fetch('https://openapi.programming-hero.com/api/phero-tube/categories')
@@ -23,31 +43,19 @@ const displayCategories = (categories) => {
 
     categories.forEach(item => {
         // making button api
-        const button = document.createElement('button');
-        button.classList = 'btn';
-        button.innerText = item.category;
+        const button = document.createElement('div');
+        button.innerHTML = `
+        <button onclick="displaySelectedProperties(${item.category_id})" class="btn">
+        ${item.category}
+        </button>
+        `
 
         // button adding
         buttonContainer.append(button)
     })
 }
 
-// {
-//       "category_id": "1001",
-//       "video_id": "aaab",
-//       "thumbnail": "https://i.ibb.co/QPNzYVy/moonlight.jpg",
-//       "title": "Midnight Serenade",
-//       "authors": [
-//         {
-//           "profile_picture": "https://i.ibb.co/fDbPv7h/Noha.jpg",
-//           "profile_name": "Noah Walker",
-//           "verified": false
-//         }
-//       ],
-//       "others": {
-//         "views": "543K",
-//         "posted_date": ""
-//       }
+// video loader
 
 const videoLoader = () => {
     fetch('https://openapi.programming-hero.com/api/phero-tube/videos')
@@ -58,6 +66,7 @@ const videoLoader = () => {
 
 const displayVideo = (videos) => {
     const newVideoSection = document.getElementById('video');
+    newVideoSection.innerHTML = "";
     videos.forEach(video => {
         const div = document.createElement('div');
         div.innerHTML =
@@ -66,7 +75,7 @@ const displayVideo = (videos) => {
             <img class="rounded-xl w-full h-full object-cover "
             src= ${video.thumbnail}
             alt="Shoes" />
-            ${video.others.posted_date?.length === 0 ? '': `<span class="absolute right-2 bottom-2 bg-black text-white p-2 rounded">${getTime(video.others.posted_date)}</span>`}
+            ${video.others.posted_date?.length === 0 ? '' : `<span class="absolute right-2 bottom-2 bg-black text-white p-2 rounded">${getTime(video.others.posted_date)}</span>`}
             
         </figure>
         <div class="py-3 flex gap-3">

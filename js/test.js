@@ -16,8 +16,11 @@
 function getDay(time){
     const day = parseInt(time / 86400);
     let remainingSecond = time % 86400;
-    let remainingHour = parseInt(remainingSecond / 3600);
-    let minuts = parseInt(remainingSecond % 3600);
-    return `${day} days ago ${remainingHour} hours ago ${minuts} minutes ${remainingSecond} second`
+    const hour = parseInt(remainingSecond / 3600);
+    let remainingHour = hour % 3600;
+    const minute = parseInt(remainingHour / 60)
+    return `${day} days ${hour} hours ${minute} ${remainingSecond} second ago`
 }
 console.log(getDay(900500))
+
+// ${remainingHour} hours ago ${minuts} minutes 
